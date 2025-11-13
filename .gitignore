@@ -1,2 +1,5 @@
 bot/.env
 bot/max_bot
+__pycache__/
+test.py
+*.db
