@@ -3,3 +3,5 @@ db.db
 __pycache__/
 *.pyc
 .ropeproject/
+test.py
+*.db
