@@ -55,7 +55,7 @@ class UserRepository(BaseRepository):
 
     def get_user_by_id(self, id: int) -> Optional[User]:
         with self.get_session() as session:
-            return session.get(User, id, options=[selectinload(User.rooms)])
+            return session.get(User, id)
 
     def get_user_by_user_id(self, user_id: int) -> Optional[User]:
         with self.get_session() as session:
@@ -77,7 +77,7 @@ class UserRepository(BaseRepository):
     def get_user_rooms(self, user_id: int) -> List[Room]:
         with self.get_session() as session:
             user = session.get(User, user_id, options=[selectinload(User.rooms)])
-            return user.rooms if user else []
+            return list(user.rooms) if user else []
 
     def user_in_room(self, user_id: int, room_id: int) -> bool:
         with self.get_session() as session:

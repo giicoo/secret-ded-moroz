@@ -2,6 +2,7 @@ from sqlalchemy import Integer, String, ForeignKey, Table, Column
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from utils.utils import code_generator
+from typing import List, Optional
 Base = declarative_base()
 
 room_user = Table(
@@ -18,10 +19,11 @@ class User(Base):
     user_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
 
     # Relationships (многие-ко-многим с Room)
-    rooms: Mapped[list["Room"]] = relationship(
+    rooms: Mapped[Optional[List["Room"]]] = relationship(
         "Room",
         secondary=room_user,
         back_populates="users"
+
     )
     sent_gifts: Mapped[list["Gift"]] = relationship(
         "Gift",

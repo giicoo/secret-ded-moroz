@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Configs(BaseSettings):
-    TOKEN_BOT: str = "test"
+    BOT_TOKEN: str
     DB_URI: str = "sqlite:///db.db"
 
 
