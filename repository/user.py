@@ -11,10 +11,10 @@ class UserRepository(BaseRepository):
     def __init__(self, database_url: str):
         super().__init__(database_url)
 
-    def create_user(self, user_id: int) -> Optional[User]:
+    def create_user(self, user_id: int, name: str) -> Optional[User]:
         with self.get_session() as session:
             try:
-                user = User(user_id=user_id)
+                user = User(user_id=user_id, name=name)
                 session.add(user)
                 session.commit()
                 session.refresh(user)
@@ -29,6 +29,7 @@ class UserRepository(BaseRepository):
             try:
                 user = session.get(User, user_id)
                 room = session.get(Room, room_id)
+                print(user, room)
                 if user and room:
                     user.rooms.append(room)
                     session.commit()
@@ -77,6 +78,7 @@ class UserRepository(BaseRepository):
     def get_user_rooms(self, user_id: int) -> List[Room]:
         with self.get_session() as session:
             user = session.get(User, user_id, options=[selectinload(User.rooms)])
+            print(user)
             return list(user.rooms) if user else []
 
     def user_in_room(self, user_id: int, room_id: int) -> bool:

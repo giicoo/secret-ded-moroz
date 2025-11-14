@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.ext.declarative import declarative_base
 from utils.utils import code_generator
 from typing import List, Optional
+
 Base = declarative_base()
 
 room_user = Table(
@@ -16,9 +17,9 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String)
     user_id: Mapped[int] = mapped_column(Integer, unique=True, nullable=False)
 
-    # Relationships (многие-ко-многим с Room)
     rooms: Mapped[Optional[List["Room"]]] = relationship(
         "Room",
         secondary=room_user,
@@ -42,7 +43,6 @@ class Room(Base):
     id: Mapped[int] = mapped_column(Integer, autoincrement=True, primary_key=True, index=True)
     invite_code: Mapped[str] = mapped_column(String, default=code_generator)
 
-    # Relationships (многие-ко-многим с User)
     users: Mapped[list["User"]] = relationship(
         "User",
         secondary=room_user,
@@ -58,7 +58,6 @@ class Gift(Base):
     receiver_id: Mapped[int] = mapped_column(Integer, ForeignKey('users.id'))
     room_id: Mapped[int] = mapped_column(Integer, ForeignKey('rooms.id'))
 
-    # Relationships
     sender: Mapped["User"] = relationship(
         "User",
         foreign_keys=[sender_id],
